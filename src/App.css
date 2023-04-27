@@ -7,6 +7,10 @@
   color: white;
 }
 
-button {
-  margin: 0.25em;
+.btn {
+  cursor: pointer;
+}
+
+.btn:disabled {
+  cursor: auto;
 }

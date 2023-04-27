@@ -1,0 +1,8 @@
+.pagination {
+  background-color: lightgray;
+  padding: 0.25em 0;
+}
+
+.pagination .btn.pageNumber {
+  margin: 0 0.25em;
+}

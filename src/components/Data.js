@@ -4,11 +4,15 @@ import List from "./List";
 import { useEffect, useState } from "react";
 
 const Data = () => {
-  const baseUrl = "https://swapi.dev/api/";
-
   const [dataCategories, setDataCategories] = useState([]);
 
-  const [currentData, setCurrentData] = useState({});
+  const [currentDataCount, setCurrentDataCount] = useState(null);
+
+  const [currentCategory, setCurrentCategory] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const baseUrl = "https://swapi.dev/api/";
 
   const getDataCategories = () => {
     axios
@@ -17,18 +21,7 @@ const Data = () => {
         setDataCategories(Object.keys(res.data));
       })
       .catch((error) => {
-        console.log("error:", error);
-      });
-  };
-
-  const getDataAbout = (category) => {
-    axios
-      .get(`${baseUrl}${category}`)
-      .then((res) => {
-        setCurrentData(res.data);
-      })
-      .catch((error) => {
-        console.log("error:", error);
+        console.log("error getDataCategories:", error);
       });
   };
 
@@ -36,10 +29,21 @@ const Data = () => {
     getDataCategories();
   }, []);
 
+  const getDataLength = (category) => {
+    axios
+      .get(`${baseUrl}${category}`)
+      .then((res) => {
+        setCurrentDataCount(res.data.count);
+      })
+      .catch((error) => {
+        console.log("error getDataLength:", error);
+      });
+  };
+
   return (
     <div>
-      <Buttons dataCategories={dataCategories} getDataAbout={getDataAbout} />
-      <List currentData={currentData} />
+      <Buttons dataCategories={dataCategories} getDataLength={getDataLength} setCurrentCategory={setCurrentCategory} isLoading={isLoading} />
+      <List currentDataCount={currentDataCount} baseUrl={baseUrl} currentCategory={currentCategory} setIsLoading={setIsLoading} isLoading={isLoading} />
     </div>
   );
 };

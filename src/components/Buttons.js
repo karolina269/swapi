@@ -1,9 +1,16 @@
+import "./Buttons.css";
+
 const Buttons = (props) => {
+  const buttonHandler = (category) => {
+    props.getDataLength(category);
+    props.setCurrentCategory(category);
+  };
+
   return (
-    <div>
+    <div className="buttons">
       {props.dataCategories.map((category, index) => {
         return (
-          <button key={index} onClick={() => props.getDataAbout(category)}>
+          <button className="btn" key={index} onClick={() => buttonHandler(category)} disabled={props.isLoading}>
             {category}
           </button>
         );
