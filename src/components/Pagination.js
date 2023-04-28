@@ -5,7 +5,7 @@ const Pagination = (props) => {
     <div className="pagination">
       {props.pageNumbers.map((pageNumber, index) => {
         return (
-          <button className="btn pageNumber" key={index} onClick={() => props.setCurrentPage(pageNumber)} disabled={props.isLoading}>
+          <button className="btn pageNumber" key={index} onClick={() => props.setCurrentPage(pageNumber)}>
             {pageNumber}
           </button>
         );

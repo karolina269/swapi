@@ -1,22 +1,21 @@
 import axios from "axios";
 import Buttons from "./Buttons";
 import List from "./List";
+import { settings } from "../settings";
 import { useEffect, useState } from "react";
 
 const Data = () => {
   const [dataCategories, setDataCategories] = useState([]);
 
-  const [currentDataCount, setCurrentDataCount] = useState(null);
-
   const [currentCategory, setCurrentCategory] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const baseUrl = "https://swapi.dev/api/";
+  const [currentPage, setCurrentPage] = useState(1);
 
   const getDataCategories = () => {
     axios
-      .get(baseUrl)
+      .get(settings.baseUrl)
       .then((res) => {
         setDataCategories(Object.keys(res.data));
       })
@@ -29,21 +28,23 @@ const Data = () => {
     getDataCategories();
   }, []);
 
-  const getDataLength = (category) => {
-    axios
-      .get(`${baseUrl}${category}`)
-      .then((res) => {
-        setCurrentDataCount(res.data.count);
-      })
-      .catch((error) => {
-        console.log("error getDataLength:", error);
-      });
-  };
-
   return (
     <div>
-      <Buttons dataCategories={dataCategories} getDataLength={getDataLength} setCurrentCategory={setCurrentCategory} isLoading={isLoading} />
-      <List currentDataCount={currentDataCount} baseUrl={baseUrl} currentCategory={currentCategory} setIsLoading={setIsLoading} isLoading={isLoading} />
+      <Buttons
+        dataCategories={dataCategories}
+        setCurrentCategory={setCurrentCategory}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        isLoading={isLoading}
+      />
+      <List
+        baseUrl={settings.baseUrl}
+        currentCategory={currentCategory}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        setIsLoading={setIsLoading}
+        isLoading={isLoading}
+      />
     </div>
   );
 };

@@ -2,8 +2,8 @@ import "./Buttons.css";
 
 const Buttons = (props) => {
   const buttonHandler = (category) => {
-    props.getDataLength(category);
     props.setCurrentCategory(category);
+    props.setCurrentPage(1);
   };
 
   return (

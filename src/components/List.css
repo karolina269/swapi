@@ -4,6 +4,11 @@
   margin: 0;
 }
 
-.itemsList > li:nth-child(2n + 1) {
+.itemsList li h2 {
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.itemsList > li h2:nth-child(2n + 1) {
   background-color: lightgray;
 }

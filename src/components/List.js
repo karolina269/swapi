@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Pagination from "./Pagination";
 import LoadingSpinner from "./LoadingSpinner";
+import Item from "./Item";
 import "./List.css";
 
 const List = (props) => {
-  const [currentPage, setCurrentPage] = useState(1);
   const [pageContent, setPageContent] = useState([]);
   const [numberOfPages, setNumberOfPages] = useState(0);
   const [pageNumbers, setPageNumbers] = useState([]);
@@ -13,7 +13,7 @@ const List = (props) => {
   const getPageContent = () => {
     props.setIsLoading(true);
     axios
-      .get(`${props.baseUrl}${props.currentCategory}/?page=${currentPage}`)
+      .get(`${props.baseUrl}${props.currentCategory}/?page=${props.currentPage}`)
       .then((res) => {
         setPageContent(res.data);
         props.setIsLoading(false);
@@ -23,18 +23,17 @@ const List = (props) => {
         props.setIsLoading(false);
       });
   };
+  useEffect(() => {
+    getPageContent();
+  }, [props.currentPage]);
 
   useEffect(() => {
     getPageContent();
-  }, [currentPage, props.currentCategory]);
-
-  useEffect(() => {
-    setCurrentPage(1);
   }, [props.currentCategory]);
 
   useEffect(() => {
-    setNumberOfPages(Math.ceil(props.currentDataCount / 10));
-  }, [props.currentDataCount]);
+    setNumberOfPages(Math.ceil(pageContent.count / 10));
+  }, [pageContent]);
 
   useEffect(() => {
     let tempPageNumbers = [];
@@ -45,17 +44,19 @@ const List = (props) => {
   }, [numberOfPages]);
 
   return (
-    <div>
+    <div className="list">
       {props.isLoading && <LoadingSpinner />}
       {!props.isLoading && (
-        <ul className="itemsList">
-          {pageContent.results &&
-            pageContent.results.map((item) => {
-              return <li key={item.created}>{item.name ? item.name : item.title}</li>;
-            })}
-        </ul>
+        <>
+          <ul className="itemsList">
+            {pageContent.results &&
+              pageContent.results.map((item) => {
+                return <Item item={item} key={item.created} />;
+              })}
+          </ul>
+          <Pagination pageNumbers={pageNumbers} currentPage={props.currentPage} setCurrentPage={props.setCurrentPage} />
+        </>
       )}
-      <Pagination pageNumbers={pageNumbers} currentPage={currentPage} setCurrentPage={setCurrentPage} isLoading={props.isLoading} />
     </div>
   );
 };
