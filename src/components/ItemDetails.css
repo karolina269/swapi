@@ -2,6 +2,17 @@
   margin: auto;
 }
 
-.itemDetails .tableRow .key {
+.itemDetails .tableRow td.key {
   font-weight: 600;
+  padding: 0.25em 0;
+}
+
+.itemDetails .tableRow td.value {
+  max-width: 600px;
+  padding: 0 0.25em;
+}
+
+.itemDetails .tableRow td.value ul {
+  list-style: none;
+  padding-inline-start: 0;
 }
